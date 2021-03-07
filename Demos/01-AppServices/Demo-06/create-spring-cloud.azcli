@@ -6,16 +6,18 @@ app=todo-service
 
 az group create -n $grp -l $loc
 
-az mysql flexible-server create  -g $grp -n mysql-${cloud} --sku-name "Standard_B1ms" --tier "Burstable" --admin-user "spring" --admin-password "spring-password" --public-access all --no-wait
-
 az spring-cloud create -g $grp -n $cloud --sku standard --enable-java-agent true --sku Basic
 
 az spring-cloud app create -n $app
 
 # Check of sql server has been created
 
+az mysql server create  -g $grp -n mysql-${cloud} -l $loc --sku-name B_Gen5_1 --storage-size 5120 --admin-user "spring" --admin-password "Sql-P@$$word23567!" 
+
 az mysql db create --name "todos" --server-name mysql-${cloud}
 
-az mysql server firewall-rule create --name mysql-${cloud}-allow-azure-ip --server ${SPRING_CLOUD_NAME}-mysql --start-ip-address "0.0.0.0" --end-ip-address "0.0.0.0"
+az mysql server firewall-rule create --name mysql-${cloud}-allow-azure-ip --server mysql-${cloud} --start-ip-address "0.0.0.0" --end-ip-address "0.0.0.0"
 
 #Stopped here: https://docs.microsoft.com/en-us/learn/modules/azure-spring-cloud-workshop/4-build-spring-boot-microservice
+
+curl https://start.spring.io/starter.tgz -d dependencies=web,mysql,data-jpa,cloud-eureka,cloud-config-client -d baseDir=todo-service -d bootVersion=2.3.6.RELEASE -d javaVersion=1.8 | tar -xzvf 
