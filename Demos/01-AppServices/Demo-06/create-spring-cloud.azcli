@@ -1,0 +1,21 @@
+rnd=$RANDOM
+grp=az204-spring-cloud-$rnd
+loc=westeurope
+cloud=azure-spring-cloud-$rnd
+app=todo-service
+
+az group create -n $grp -l $loc
+
+az mysql flexible-server create  -g $grp -n mysql-${cloud} --sku-name "Standard_B1ms" --tier "Burstable" --admin-user "spring" --admin-password "spring-password" --public-access all --no-wait
+
+az spring-cloud create -g $grp -n $cloud --sku standard --enable-java-agent true --sku Basic
+
+az spring-cloud app create -n $app
+
+# Check of sql server has been created
+
+az mysql db create --name "todos" --server-name mysql-${cloud}
+
+az mysql server firewall-rule create --name mysql-${cloud}-allow-azure-ip --server ${SPRING_CLOUD_NAME}-mysql --start-ip-address "0.0.0.0" --end-ip-address "0.0.0.0"
+
+#Stopped here: https://docs.microsoft.com/en-us/learn/modules/azure-spring-cloud-workshop/4-build-spring-boot-microservice
