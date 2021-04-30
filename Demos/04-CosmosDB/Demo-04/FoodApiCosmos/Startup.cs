@@ -25,20 +25,13 @@ namespace FoodApiCosmos
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // services.AddDbContext<DbContext>(options =>
-            //     options.UseCosmos("CosmosEndPoint",
-            //     "CosmosKey",
-            //     "CosmosDatabase")
-
             services.AddDbContext<FoodCosmosDbContext>(options =>
-                options.UseCosmos("https://az204-cosmosdb-007.documents.azure.com:443/",
-                "mlhUyrSxKGFIGycZTenEGEjjt7NdV4QjvIuD1Utu1MvG27pmdf6SnphTBvpPnns3sDyIrmRqpJIk7LiS4VK2MA==",
-                "fooddb")
-
-);
+                options.UseCosmos(Configuration["CosmosDB:EndPoint"],
+                Configuration["CosmosDB:AccountKey"],
+                Configuration["CosmosDB:DatabaseName"])
+            );
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,7 +40,6 @@ namespace FoodApiCosmos
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
