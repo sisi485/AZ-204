@@ -4,9 +4,9 @@ namespace CosmosEF
 {
     public class FoodCosmosDbContext : DbContext
     {
-        string conStr = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
+        // string conStr = "AccountEndpoint=https://localhost:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 
-        string dbname = "fooddb";
+        // string dbname = "fooddb";
 
         public DbSet<FoodItem> FoodItems { get; set; }
     
@@ -18,7 +18,7 @@ namespace CosmosEF
             
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseCosmos(conStr, databaseName: dbname);
+        // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // => optionsBuilder.UseCosmos(conStr, databaseName: dbname);
     }
 }
